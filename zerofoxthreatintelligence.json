@@ -1,0 +1,450 @@
+{
+    "appid": "39c36baf-0b8b-4132-a080-ef89aa17c150",
+    "name": "ZeroFox Threat Intelligence",
+    "description": "ZeroFox Threat Intelligence",
+    "type": "information",
+    "product_vendor": "ZeroFox",
+    "logo": "zerofoxthreatintelligence.svg",
+    "logo_dark": "zerofoxthreatintelligence_dark.svg",
+    "product_name": "ZeroFox Threat Intelligence",
+    "product_version_regex": ".*",
+    "publisher": "ZeroFox",
+    "contributors": [
+        {
+            "name": "Diego Ramirez"
+        },
+        {
+            "name": "Felipe Garrido"
+        }
+    ],
+    "license": "Copyright (c) ZeroFox, 2023",
+    "app_version": "1.0.0",
+    "utctime_updated": "2023-02-28T17:09:50.740253Z",
+    "package_name": "phantom_zerofoxthreatintelligence",
+    "main_module": "zerofoxthreatintelligence_connector.py",
+    "min_phantom_version": "4.8.0",
+    "python_version": "3",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "zerofox_username": {
+            "description": "ZeroFox CTI Username",
+            "data_type": "string",
+            "required": false,
+            "value_list": [],
+            "default": "",
+            "order": 0
+        },
+        "zerofox_password": {
+            "description": "ZeroFox CTI Password",
+            "data_type": "password",
+            "required": false,
+            "order": 1
+        },
+        "verify_server_cert": {
+            "description": "Verify Sever Certificate",
+            "data_type": "boolean",
+            "required": false,
+            "default": true,
+            "order": 2
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "verbose": "",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup domain",
+            "identifier": "lookup_domain",
+            "description": "Check for the presence of a domain in the ZeroFox Threat Intelligence Feed",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to lookup",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "domain"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "ip",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "column_name": "url",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.details",
+                    "data_type": "string",
+                    "column_name": "details",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "column_name": "created",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "width": 12,
+                "title": "ZeroFox Feed Details",
+                "type": "table",
+                "height": 5
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup ip",
+            "identifier": "lookup_ip",
+            "description": "Check for the presence of an IP in the ZeroFox Threat Intelligence Feed",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "ip": {
+                    "description": "IP to lookup",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "ip"
+                    ]
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.ip",
+                    "data_type": "string",
+                    "contains": [
+                        "ip"
+                    ],
+                    "column_name": "ip",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "column_name": "url",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.threat_type",
+                    "data_type": "string",
+                    "column_name": "threat type",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "column_name": "created",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "width": 12,
+                "title": "ZeroFox Feed Details",
+                "type": "table",
+                "height": 5
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup exploit",
+            "identifier": "lookup_exploit",
+            "description": "Check for the presence of a exploit in the ZeroFox Threat Intelligence Feed",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "cve": {
+                    "description": "CVE to lookup",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "cve"
+                    ]
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.cve",
+                    "data_type": "string",
+                    "contains": [
+                        "cve"
+                    ],
+                    "column_name": "cve",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "column_name": "url",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "column_name": "created",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "width": 12,
+                "title": "ZeroFox Feed Details",
+                "type": "table",
+                "height": 5
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup hash",
+            "identifier": "lookup_hash",
+            "description": "Check for the presence of a hash in the ZeroFox Threat Intelligence Feed",
+            "verbose": "",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "hash": {
+                    "description": "Hash to lookup",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "sha256",
+                        "sha1",
+                        "md5"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.hash",
+                    "data_type": "string",
+                    "contains": [
+                        "sha256",
+                        "sha1",
+                        "md5"
+                    ],
+                    "column_name": "hash",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.family",
+                    "data_type": "string",
+                    "column_name": "family",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "column_name": "created",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "width": 12,
+                "title": "ZeroFox Feed Details",
+                "type": "table",
+                "height": 5
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "lookup email",
+            "identifier": "lookup_email",
+            "description": "Check for the presence of an email address in the ZeroFox Threat Intelligence Feed",
+            "verbose": "Lookup Email Address",
+            "type": "investigate",
+            "read_only": false,
+            "parameters": {
+                "email_address": {
+                    "description": "Email Address",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": []
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.email_address",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "email_address",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "domain",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.breach_name",
+                    "data_type": "string",
+                    "column_name": "breach name",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "column_name": "created",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "width": 12,
+                "title": "ZeroFox Feed Details",
+                "type": "table",
+                "height": 5
+            },
+            "versions": "EQ(*)"
+        }
+    ],
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.12.2-py3-none-any.whl"
+            },
+            {
+                "module": "certifi",
+                "input_file": "wheels/py3/certifi-2023.11.17-py3-none-any.whl"
+            },
+            {
+                "module": "charset_normalizer",
+                "input_file": "wheels/py39/charset_normalizer-3.3.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/py3/idna-3.4-py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/py3/urllib3-2.1.0-py3-none-any.whl"
+            }
+        ]
+    }
+}
