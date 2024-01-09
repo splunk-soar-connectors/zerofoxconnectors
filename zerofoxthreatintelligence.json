@@ -4,8 +4,8 @@
     "description": "ZeroFox Threat Intelligence",
     "type": "information",
     "product_vendor": "ZeroFox",
-    "logo": "zerofoxthreatintelligence.svg",
-    "logo_dark": "zerofoxthreatintelligence_dark.svg",
+    "logo": "logo_zerofoxthreatintelligence.svg",
+    "logo_dark": "logo_zerofoxthreatintelligence_dark.svg",
     "product_name": "ZeroFox Threat Intelligence",
     "product_version_regex": ".*",
     "publisher": "ZeroFox",
@@ -24,26 +24,22 @@
     "main_module": "zerofoxthreatintelligence_connector.py",
     "min_phantom_version": "5.5.0",
     "python_version": "3",
-    "app_wizard_version": "1.0.0",
+    "fips_compliant": false,
+    "app_wizard_version": "1.1.0",
     "configuration": {
         "zerofox_username": {
             "description": "ZeroFox CTI Username",
             "data_type": "string",
-            "required": false,
-            "value_list": [],
-            "default": "",
             "order": 0
         },
         "zerofox_password": {
             "description": "ZeroFox CTI Password",
             "data_type": "password",
-            "required": false,
             "order": 1
         },
         "verify_server_cert": {
             "description": "Verify Sever Certificate",
             "data_type": "boolean",
-            "required": false,
             "default": true,
             "order": 2
         }
@@ -76,8 +72,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -88,36 +82,40 @@
                     "contains": [
                         "domain"
                     ],
-                    "column_name": "domain",
+                    "column_name": "Domain",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
-                    "column_name": "ip",
+                    "column_name": "IP",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
-                    "column_name": "url",
+                    "column_name": "URL",
                     "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.details",
                     "data_type": "string",
-                    "column_name": "details",
+                    "column_name": "Details",
                     "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
                     "data_type": "string",
-                    "column_name": "created",
+                    "column_name": "Created",
                     "column_order": 4
                 },
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -165,31 +163,35 @@
                     "contains": [
                         "ip"
                     ],
-                    "column_name": "ip",
+                    "column_name": "IP",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
-                    "column_name": "url",
+                    "column_name": "URL",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.threat_type",
                     "data_type": "string",
-                    "column_name": "threat type",
+                    "column_name": "Threat Type",
                     "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
                     "data_type": "string",
-                    "column_name": "created",
+                    "column_name": "Created",
                     "column_order": 3
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_order": 4
+                    "column_order": 4,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -241,25 +243,29 @@
                     "contains": [
                         "cve"
                     ],
-                    "column_name": "cve",
+                    "column_name": "Cve",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
-                    "column_name": "url",
+                    "column_name": "URL",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
                     "data_type": "string",
-                    "column_name": "created",
+                    "column_name": "Created",
                     "column_order": 2
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_order": 3
+                    "column_order": 3,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -303,8 +309,6 @@
                         "sha1",
                         "md5"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -317,24 +321,28 @@
                         "sha1",
                         "md5"
                     ],
-                    "column_name": "hash",
+                    "column_name": "Hash",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.family",
                     "data_type": "string",
-                    "column_name": "family",
+                    "column_name": "Family",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
                     "data_type": "string",
-                    "column_name": "created",
+                    "column_name": "Created",
                     "column_order": 2
                 },
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -369,8 +377,6 @@
                     "description": "Email Address",
                     "data_type": "string",
                     "required": true,
-                    "primary": true,
-                    "contains": [],
                     "order": 0
                 }
             },
@@ -378,32 +384,35 @@
                 {
                     "data_path": "action_result.parameter.email_address",
                     "data_type": "string",
-                    "contains": [],
-                    "column_name": "email_address",
+                    "column_name": "Email Address",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "column_name": "domain",
+                    "column_name": "Domain",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.breach_name",
                     "data_type": "string",
-                    "column_name": "breach name",
+                    "column_name": "Breach Name",
                     "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
                     "data_type": "string",
-                    "column_name": "created",
+                    "column_name": "Created",
                     "column_order": 3
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_order": 4
+                    "column_order": 4,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -437,28 +446,20 @@
                 "input_file": "wheels/py3/beautifulsoup4-4.12.2-py3-none-any.whl"
             },
             {
-                "module": "certifi",
-                "input_file": "wheels/py3/certifi-2023.11.17-py3-none-any.whl"
-            },
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
+            }
+        ]
+    },
+    "pip_dependencies": {
+        "wheel": [
             {
-                "module": "charset_normalizer",
-                "input_file": "wheels/py39/charset_normalizer-3.3.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
-            },
-            {
-                "module": "idna",
-                "input_file": "wheels/py3/idna-3.4-py3-none-any.whl"
-            },
-            {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.12.2-py3-none-any.whl"
             },
             {
                 "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
-            },
-            {
-                "module": "urllib3",
-                "input_file": "wheels/py3/urllib3-2.1.0-py3-none-any.whl"
+                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
             }
         ]
     }
