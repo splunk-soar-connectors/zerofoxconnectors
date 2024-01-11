@@ -1,6 +1,6 @@
 # File: zerofoxthreatintelligence_connector.py
 #
-# Copyright (c) 2023 ZeroFox,
+# Copyright (c) 2024 ZeroFox,
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -591,6 +591,7 @@ if __name__ == "__main__":
 
     username = args.username
     password = args.password
+    verify = args.verify
 
     if username is not None and password is None:
         # User specified a username but not a password, so ask
@@ -605,7 +606,7 @@ if __name__ == "__main__":
             )
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=verify)
             csrftoken = r.cookies["csrftoken"]
 
             data = dict()
@@ -618,7 +619,7 @@ if __name__ == "__main__":
             headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers)
             session_id = r2.cookies["sessionid"]
         except Exception as e:
             print(f"Unable to get session id from the platform. Error: {e}")
@@ -639,4 +640,4 @@ if __name__ == "__main__":
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
