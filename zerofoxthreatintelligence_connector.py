@@ -1,6 +1,6 @@
 # File: zerofoxthreatintelligence_connector.py
 #
-# "license": "Copyright (c) ZeroFox, 2023",
+# Copyright (c) 2023 ZeroFox,
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -573,6 +573,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
 if __name__ == "__main__":
     import argparse
+    import sys
 
     import pudb
 
@@ -583,6 +584,7 @@ if __name__ == "__main__":
     argparser.add_argument("input_test_json", help="Input Test JSON file")
     argparser.add_argument("-u", "--username", help="username", required=False)
     argparser.add_argument("-p", "--password", help="password", required=False)
+    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -620,7 +622,7 @@ if __name__ == "__main__":
             session_id = r2.cookies["sessionid"]
         except Exception as e:
             print(f"Unable to get session id from the platform. Error: {e}")
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
