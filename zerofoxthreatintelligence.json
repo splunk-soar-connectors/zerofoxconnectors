@@ -372,8 +372,8 @@
         {
             "action": "lookup email",
             "identifier": "lookup_email",
-            "description": "Lookup Email Address.",
-            "verbose": "Check for the presence of an email address in the ZeroFox Threat Intelligence Feed",
+            "description": "Lookup Email Address",
+            "verbose": "Check for the presence of an email address in the ZeroFox Threat Intelligence Feed.",
             "type": "investigate",
             "read_only": false,
             "parameters": {
