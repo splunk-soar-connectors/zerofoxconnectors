@@ -46,7 +46,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return {
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json",
-            "zf-source": "splunk"
+            "zf-source": "Splunk-SOAR"
         }
 
     def _process_empty_response(self, response, action_result):
