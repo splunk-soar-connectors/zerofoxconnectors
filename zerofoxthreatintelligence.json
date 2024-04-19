@@ -22,7 +22,7 @@
     "utctime_updated": "2023-02-28T17:09:50.740253Z",
     "package_name": "phantom_zerofoxthreatintelligence",
     "main_module": "zerofoxthreatintelligence_connector.py",
-    "min_phantom_version": "5.5.0",
+    "min_phantom_version": "6.1.1",
     "python_version": "3",
     "fips_compliant": false,
     "app_wizard_version": "1.0.0",
