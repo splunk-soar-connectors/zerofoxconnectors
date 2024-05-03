@@ -2,11 +2,11 @@
 # ZeroFox Threat Intelligence
 
 Publisher: ZeroFox  
-Connector Version: 1.1.0  
+Connector Version: 1.1.1  
 Product Vendor: ZeroFox  
 Product Name: ZeroFox Threat Intelligence  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.5.0  
+Minimum Product Version: 6.1.1  
 
 ZeroFox Threat Intelligence
 
