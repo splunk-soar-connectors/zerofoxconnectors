@@ -521,7 +521,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         self.save_progress("success")
 
         return action_result.set_status(phantom.APP_SUCCESS)
-    
+
     def _format_key_incident_params(self, param) -> str:
         params = ""
         for key, value in param.items():
@@ -538,7 +538,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         if phantom.is_fail(ret_val):
             return None, action_result.get_status()
-        
+
         return response, action_result.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
