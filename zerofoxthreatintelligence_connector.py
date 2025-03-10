@@ -522,6 +522,19 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def get_key_incidents(self, param):
+        self.initialize()
+        headers = self._get_cti_headers()
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        endpoint = "/cti/key-incidents/?ordering=update"
+        ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
+
+        if phantom.is_fail(ret_val):
+            return None, action_result.get_status()
+        
+        return response, action_result.set_status(phantom.APP_SUCCESS)
+
     def handle_action(self, param):
         action_id = self.get_action_identifier()
 
