@@ -532,8 +532,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         self.initialize()
         headers = self._get_cti_headers()
         action_result = self.add_action_result(ActionResult(dict(param)))
-        endpoint = f"/cti/key-incidents/?ordering=update&tags=Key Incident{
-            self._format_key_incident_params(param)}"
+        endpoint = (f"/cti/key-incidents/?ordering=update&tags=Key Incident"
+            f"{self._format_key_incident_params(param)}")
         ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
         if phantom.is_fail(ret_val):
