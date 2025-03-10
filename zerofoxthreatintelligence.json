@@ -18,7 +18,7 @@
         }
     ],
     "license": "Copyright (c) ZeroFox, 2024-2025",
-    "app_version": "1.1.1",
+    "app_version": "1.1.2",
     "utctime_updated": "2023-02-28T17:09:51.740153Z",
     "package_name": "phantom_zerofoxthreatintelligence",
     "main_module": "zerofoxthreatintelligence_connector.py",
@@ -37,11 +37,17 @@
             "data_type": "password",
             "order": 1
         },
+        "key_incident_poll_interval": {
+            "description": "Initial historical alert poll interval (in days)",
+            "data_type": "string",
+            "default": 10,
+            "order": 2
+        },
         "verify_server_cert": {
             "description": "Verify Sever Certificate",
             "data_type": "boolean",
             "default": true,
-            "order": 2
+            "order": 3
         }
     },
     "actions": [
@@ -440,6 +446,34 @@
                 "type": "table",
                 "height": 5
             },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "on poll",
+            "identifier": "on_poll",
+            "description": "Callback action for the on_poll ingest functionality",
+            "type": "ingest",
+            "read_only": true,
+            "parameters": {
+                "start_time": {
+                    "description": "Start of time range, in epoch time (milliseconds)",
+                    "data_type": "numeric",
+                    "order": 0
+                },
+                "end_time": {
+                    "description": "End of time range, in epoch time (milliseconds)",
+                    "data_type": "numeric",
+                    "order": 1
+                },
+                "historical_poll": {
+                    "description": "Historical poll",
+                    "data_type": "boolean",
+                    "default": true,
+                    "order": 2
+                }
+
+            },
+            "output": [],
             "versions": "EQ(*)"
         }
     ],
