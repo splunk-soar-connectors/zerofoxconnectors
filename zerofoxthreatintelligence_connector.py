@@ -14,6 +14,7 @@
 # and limitations under the License.
 
 import json
+import re
 from dataclasses import asdict, dataclass
 from datetime import datetime
 
@@ -46,6 +47,17 @@ class KeyIncident:
     tags: list[str]
     url: str
     attachments: list[str]
+
+    def to_dict(self):
+        return asdict(self)
+
+
+@dataclass
+class KeyIncidentAttachment:
+    content: str
+    mime_type: str
+    name: str
+    created_at: str
 
     def to_dict(self):
         return asdict(self)
@@ -275,6 +287,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         :return: bool
         """
+        if self._access_token:
+            return self._access_token
 
         self.debug_print("Fetching Access Token...")
         self.debug_print(f"username={self._username}")
@@ -591,19 +605,44 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _format_key_incident_params(self, param) -> str:
-        params = ""
-        for key, value in param.items():
-            params += f"&{key}={value}"
-        return params
+    def __parse_file_content(self, data_uri):
+        header_data_match = re.match(r'data:(.*?);base64,(.+)', data_uri)
+        if not header_data_match:
+            raise ValueError("Invalid data URL format")
+        mime_type, data = header_data_match.groups()
 
-    def get_key_incidents(self, param):
-        self.initialize()
+        return mime_type, data
+
+    def _get_key_incident_attachment(self, action_result, attachment_id) -> KeyIncidentAttachment:
         headers = self._get_cti_headers()
-        action_result = self.add_action_result(ActionResult(dict(param)))
-        endpoint = (f"/cti/key-incidents/?ordering=update&tags=Key Incident"
-            f"{self._format_key_incident_params(param)}")
-        ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
+        endpoint = f"/cti/key-incident-attachment/{attachment_id}/"
+
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params=None, headers=headers
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        mime_type, content = self.__parse_file_content(
+            response.get("content"))
+
+        return KeyIncidentAttachment(
+            content=content,
+            mime_type=mime_type,
+            name=response["name"],
+            created_at=response["created_at"]
+        )
+
+    def get_key_incidents(self, action_result):
+        headers = self._get_cti_headers()
+        endpoint = ("/cti/key-incidents/")
+        params = {
+            "ordering": "update",
+            "tags": "Key Incident",
+        }
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params=params, headers=headers)
 
         if phantom.is_fail(ret_val):
             return None, action_result.get_status()
