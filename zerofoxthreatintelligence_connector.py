@@ -14,6 +14,9 @@
 # and limitations under the License.
 
 import json
+import re
+from dataclasses import asdict, dataclass
+from datetime import datetime
 
 # Phantom App imports
 import phantom.app as phantom
@@ -24,10 +27,84 @@ from phantom.base_connector import BaseConnector
 
 from zerofoxthreatintelligence_consts import ZEROFOX_API_URL
 
+KEY_INCIDENT_CONTAINER_LABEL = "ZeroFOX Key Incident"
+
 
 class RetVal(tuple):
     def __new__(cls, val1, val2=None):
         return tuple.__new__(RetVal, (val1, val2))
+
+
+@dataclass
+class KeyIncident:
+    analysis: str
+    created_at: datetime
+    updated_at: datetime
+    headline: str
+    incident_id: str
+    risk_level: str
+    solution: str
+    tags: list[str]
+    url: str
+    attachments: list[str]
+
+    def to_dict(self):
+        return asdict(self)
+
+
+@dataclass
+class KeyIncidentAttachment:
+    content: str
+    mime_type: str
+    name: str
+    created_at: str
+
+    def to_dict(self):
+        return asdict(self)
+
+
+@dataclass
+class SplunkContainer:
+    label: str
+    name: str
+    source_data_identifier: str
+    description: str
+    status: str
+    sensitivity: str
+    severity: str
+    start_time: str
+    end_time: str
+    hash: str
+    tags: list[str]
+    ingest_app_id: str
+    data: dict
+
+    def to_dict(self):
+        return asdict(self)
+
+
+class KeyIncidentsMapper:
+    def __init__(self, app_id):
+        self.app_id = app_id
+
+    def prepare_container(self, key_incident: KeyIncident) -> SplunkContainer:
+        container = SplunkContainer(
+            label=KEY_INCIDENT_CONTAINER_LABEL,
+            name=f"ZeroFOX Key Incident: {key_incident.incident_id}" + (
+                f"- {key_incident.headline}" if key_incident.headline else ""),
+            description=key_incident.analysis,
+            severity=key_incident.risk_level.lower(),
+            start_time=key_incident.created_at,
+            end_time=key_incident.updated_at,
+            sensitivity="white",
+            status="new",
+            source_data_identifier=key_incident.incident_id,
+            data=key_incident.to_dict(),
+            hash=key_incident.incident_id,
+            tags=key_incident.tags,
+            ingest_app_id=self.app_id,
+        )
+        return container
 
 
 class ZerofoxThreatIntelligenceConnector(BaseConnector):
@@ -210,6 +287,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         :return: bool
         """
+        if self._access_token:
+            return self._access_token
 
         self.debug_print("Fetching Access Token...")
         self.debug_print(f"username={self._username}")
@@ -239,7 +318,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             return None
 
     def _handle_lookup_domain(self, param):
-        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(
+            f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -279,7 +359,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
             for match in matches:
                 if ep == "c2-domains":
-                    match["created_at"] = match.pop("listed_at")
+                    match["created_at"] = match.pop("created_at")
                     match["details"] = match.pop("tags")
                     match["ip"] = match["ip_addresses"][0]
 
@@ -301,7 +381,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_email(self, param):
-        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(
+            f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -354,10 +435,10 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_ip(self, param):
-        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(
+            f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
-
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         ip_address = param["ip"]
@@ -419,7 +500,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_hash(self, param):
-        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(
+            f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -478,7 +560,8 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_exploit(self, param):
-        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(
+            f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -521,6 +604,50 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         self.save_progress("success")
 
         return action_result.set_status(phantom.APP_SUCCESS)
+
+    def __parse_file_content(self, data_uri):
+        header_data_match = re.match(r'data:(.*?);base64,(.+)', data_uri)
+        if not header_data_match:
+            raise ValueError("Invalid data URL format")
+        mime_type, data = header_data_match.groups()
+
+        return mime_type, data
+
+    def _get_key_incident_attachment(self, action_result, attachment_id) -> KeyIncidentAttachment:
+        headers = self._get_cti_headers()
+        endpoint = f"/cti/key-incident-attachment/{attachment_id}/"
+
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params=None, headers=headers
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        mime_type, content = self.__parse_file_content(
+            response.get("content"))
+
+        return KeyIncidentAttachment(
+            content=content,
+            mime_type=mime_type,
+            name=response["name"],
+            created_at=response["created_at"]
+        )
+
+    def get_key_incidents(self, action_result):
+        headers = self._get_cti_headers()
+        endpoint = ("/cti/key-incidents/")
+        params = {
+            "ordering": "update",
+            "tags": "Key Incident",
+        }
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params=params, headers=headers)
+
+        if phantom.is_fail(ret_val):
+            return None, action_result.get_status()
+
+        return response, action_result.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         action_id = self.get_action_identifier()
@@ -584,7 +711,8 @@ if __name__ == "__main__":
     argparser.add_argument("input_test_json", help="Input Test JSON file")
     argparser.add_argument("-u", "--username", help="username", required=False)
     argparser.add_argument("-p", "--password", help="password", required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument('-v', '--verify', action='store_true',
+                           help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -619,7 +747,8 @@ if __name__ == "__main__":
             headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=verify, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=verify,
+                               data=data, headers=headers)
             session_id = r2.cookies["sessionid"]
         except Exception as e:
             print(f"Unable to get session id from the platform. Error: {e}")
