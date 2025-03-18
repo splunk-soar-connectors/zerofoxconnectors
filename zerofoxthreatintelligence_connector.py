@@ -1,6 +1,6 @@
 # File: zerofoxthreatintelligence_connector.py
 #
-# Copyright (c) ZeroFox, 2024
+# Copyright (c) ZeroFox, 2024-2025
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class RetVal(tuple):
 class ZerofoxThreatIntelligenceConnector(BaseConnector):
     def __init__(self):
         # Call the BaseConnectors init first
-        super(ZerofoxThreatIntelligenceConnector, self).__init__()
+        super().__init__()
 
         self._state = None
 
@@ -43,20 +43,14 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
     def _get_cti_headers(self):
         access_token = self._handle_get_token()
 
-        return {
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json",
-            "zf-source": "Splunk-SOAR"
-        }
+        return {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json", "zf-source": "Splunk-SOAR"}
 
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
             return RetVal(phantom.APP_SUCCESS, {})
 
         return RetVal(
-            action_result.set_status(
-                phantom.APP_ERROR, "Empty response and no information in the header"
-            ),
+            action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"),
             None,
         )
 
@@ -95,9 +89,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             self.debug_print("RETURNING JSON")
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
-        message = "Error from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code, r.text.replace("{", "{{").replace("}", "}}")
-        )
+        message = "Error from server. Status Code: {} Data from server: {}".format(r.status_code, r.text.replace("{", "{{").replace("}", "}}"))
 
         self.debug_print("RETURNING ERROR")
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
@@ -127,7 +119,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             return self._process_empty_response(r, action_result)
 
         # everything else is actually an error at this point
-        message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
+        message = "Can't process response from server. Status Code: {} Data from server: {}".format(
             r.status_code, r.text.replace("{", "{{").replace("}", "}}")
         )
 
@@ -146,9 +138,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             request_func = getattr(requests, method)
         except AttributeError:
             return RetVal(
-                action_result.set_status(
-                    phantom.APP_ERROR, f"Invalid method: {method}"
-                ),
+                action_result.set_status(phantom.APP_ERROR, f"Invalid method: {method}"),
                 resp_json,
             )
 
@@ -158,9 +148,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         self.debug_print(f"URL={url}")
 
         try:
-            r = request_func(
-                url, verify=config.get("verify_server_cert", False), **kwargs
-            )
+            r = request_func(url, verify=config.get("verify_server_cert", False), **kwargs)
 
             self.debug_print(f"r={r}")
 
@@ -193,9 +181,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         self.debug_print(f"url={url}")
 
-        ret_val, _ = self._make_rest_call(
-            "/auth/token/", action_result, method="post", json=params, headers=None
-        )
+        ret_val, _ = self._make_rest_call("/auth/token/", action_result, method="post", json=params, headers=None)
 
         if phantom.is_fail(ret_val):
             self.save_progress("Test Connectivity Failed.")
@@ -258,21 +244,15 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             else:
                 continue
 
-            ret_val, response = self._make_rest_call(
-                endpoint, action_result, params=None, headers=headers
-            )
+            ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
             self.debug_print(f"response: {response}")
             self.debug_print(f"len: {len(response['results'])}")
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
 
             total_results = total_results + len(response["results"])
             matches = response.get("results", [])
@@ -320,21 +300,15 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             else:
                 continue
 
-            ret_val, response = self._make_rest_call(
-                endpoint, action_result, params=None, headers=headers
-            )
+            ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
             self.debug_print(f"response: {response}")
             self.debug_print(f"len: {len(response['results'])}")
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
 
             total_results = total_results + len(response["results"])
             matches = response.get("results", [])
@@ -375,21 +349,15 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             else:
                 continue
 
-            ret_val, response = self._make_rest_call(
-                endpoint, action_result, params=None, headers=headers
-            )
+            ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
             self.debug_print(f"response: {response}")
             self.debug_print(f"len: {len(response['results'])}")
-            self.debug_print(
-                "-------------------------------------------------------------"
-            )
+            self.debug_print("-------------------------------------------------------------")
 
             total_results = total_results + len(response["results"])
 
@@ -437,17 +405,13 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             hash_type = "sha512"
         else:
             self.save_progress("Unrecognized hash length")
-            return action_result.set_status(
-                phantom.APP_ERROR, "Unrecognized hash length"
-            )
+            return action_result.set_status(phantom.APP_ERROR, "Unrecognized hash length")
 
         headers = self._get_cti_headers()
 
         endpoint = f"/cti/malware/?{hash_type}={the_hash}"
 
-        ret_val, response = self._make_rest_call(
-            endpoint, action_result, params=None, headers=headers
-        )
+        ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -457,14 +421,10 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         for match in matches:
             action_result.add_data(match)
 
-        self.debug_print(
-            "-------------------------------------------------------------"
-        )
+        self.debug_print("-------------------------------------------------------------")
         self.debug_print(f"response: {response}")
         self.debug_print(f"len: {len(response['results'])}")
-        self.debug_print(
-            "-------------------------------------------------------------"
-        )
+        self.debug_print("-------------------------------------------------------------")
         summary = action_result.update_summary({})
 
         summary["total_objects"] = len(response["results"])
@@ -490,9 +450,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         endpoint = f"/cti/exploits/?cve={the_cve}"
 
-        ret_val, response = self._make_rest_call(
-            endpoint, action_result, params=None, headers=headers
-        )
+        ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -502,14 +460,10 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         for match in matches:
             action_result.add_data(match)
 
-        self.debug_print(
-            "-------------------------------------------------------------"
-        )
+        self.debug_print("-------------------------------------------------------------")
         self.debug_print(f"response: {response}")
         self.debug_print(f"len: {len(response['results'])}")
-        self.debug_print(
-            "-------------------------------------------------------------"
-        )
+        self.debug_print("-------------------------------------------------------------")
 
         summary = action_result.update_summary({})
         summary["total_objects"] = len(response["results"])
@@ -584,7 +538,7 @@ if __name__ == "__main__":
     argparser.add_argument("input_test_json", help="Input Test JSON file")
     argparser.add_argument("-u", "--username", help="username", required=False)
     argparser.add_argument("-p", "--password", help="password", required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -601,9 +555,7 @@ if __name__ == "__main__":
 
     if username and password:
         try:
-            login_url = (
-                f"{ZerofoxThreatIntelligenceConnector._get_phantom_base_url()}/login"
-            )
+            login_url = f"{ZerofoxThreatIntelligenceConnector._get_phantom_base_url()}/login"
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=verify)
