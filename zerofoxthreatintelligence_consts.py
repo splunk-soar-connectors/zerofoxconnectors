@@ -1,6 +1,6 @@
 # File: zerofoxthreatintelligence_consts.py
 #
-# Copyright (c) ZeroFox, 2024
+# Copyright (c) ZeroFox, 2024-2025
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,4 +15,4 @@
 
 # Define your constants here
 
-ZEROFOX_API_URL = 'https://api.zerofox.com'
+ZEROFOX_API_URL = "https://api.zerofox.com"
