@@ -31,9 +31,10 @@ from phantom.base_connector import BaseConnector
 
 from zerofoxthreatintelligence_consts import ZEROFOX_API_URL
 
+
 KEY_INCIDENT_CONTAINER_LABEL = "ZeroFOX Key Incident"
-DATE_TIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
-DATE_TIME_FORMAT_ALTERNATIVE = '%Y-%m-%dT%H:%M:%SZ'
+DATE_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+DATE_TIME_FORMAT_ALTERNATIVE = "%Y-%m-%dT%H:%M:%SZ"
 
 
 class RetVal(tuple):
@@ -58,8 +59,8 @@ class KeyIncident:
 
     def to_dict(self):
         new_dict = asdict(self)
-        new_dict['created_at'] = self.created_at.strftime(DATE_TIME_FORMAT)
-        new_dict['updated_at'] = self.updated_at.strftime(DATE_TIME_FORMAT)
+        new_dict["created_at"] = self.created_at.strftime(DATE_TIME_FORMAT)
+        new_dict["updated_at"] = self.updated_at.strftime(DATE_TIME_FORMAT)
         return new_dict
 
 
@@ -104,8 +105,7 @@ class KeyIncidentsMapper:
     def prepare_container(self, key_incident: KeyIncident) -> SplunkContainer:
         container = SplunkContainer(
             label=self._container_label,
-            name=f"ZeroFOX Key Incident: {key_incident.incident_id}" + (
-                f"- {key_incident.headline}" if key_incident.headline else ""),
+            name=f"ZeroFOX Key Incident: {key_incident.incident_id}" + (f"- {key_incident.headline}" if key_incident.headline else ""),
             description=key_incident.analysis,
             severity=key_incident.risk_level.lower() if key_incident.risk_level != "Unknown" else "Medium",
             start_time=key_incident.created_at.strftime(DATE_TIME_FORMAT),
@@ -131,23 +131,23 @@ class KeyIncidentsMapper:
     def dict_to_key_incident(self, incident_dict) -> KeyIncident:
         """Convert a dictionary to a KeyIncident object."""
         # Parse datetime strings to datetime objects
-        created_at = self._convert_datetime_string_to_datetime(incident_dict.get('created_at'))
-        updated_at = self._convert_datetime_string_to_datetime(incident_dict.get('updated_at'))
+        created_at = self._convert_datetime_string_to_datetime(incident_dict.get("created_at"))
+        updated_at = self._convert_datetime_string_to_datetime(incident_dict.get("updated_at"))
 
         # Create KeyIncident object
         key_incident = KeyIncident(
-            analysis=incident_dict.get('analysis', ''),
+            analysis=incident_dict.get("analysis", ""),
             created_at=created_at,
             updated_at=updated_at,
-            headline=incident_dict.get('headline', ''),
-            incident_id=incident_dict.get('incident_id', ''),
-            risk_level=incident_dict.get('risk_level', ''),
-            solution=incident_dict.get('solution', ''),
-            tags=incident_dict.get('tags', []),
-            threat_types=incident_dict.get('threat_types', []),
-            title=incident_dict.get('title', ''),
-            url=incident_dict.get('url', ''),
-            attachments=incident_dict.get('attachments', [])
+            headline=incident_dict.get("headline", ""),
+            incident_id=incident_dict.get("incident_id", ""),
+            risk_level=incident_dict.get("risk_level", ""),
+            solution=incident_dict.get("solution", ""),
+            tags=incident_dict.get("tags", []),
+            threat_types=incident_dict.get("threat_types", []),
+            title=incident_dict.get("title", ""),
+            url=incident_dict.get("url", ""),
+            attachments=incident_dict.get("attachments", []),
         )
 
         return key_incident
@@ -330,9 +330,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             self.error_print("start time or end time not specified")
             return None, None
 
-        return datetime.fromtimestamp(
-            start_time_param / 1000.0
-        ), datetime.fromtimestamp(end_time_param / 1000.0)
+        return datetime.fromtimestamp(start_time_param / 1000.0), datetime.fromtimestamp(end_time_param / 1000.0)
 
     def _handle_get_token(self):
         """
@@ -371,8 +369,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             return None
 
     def _handle_lookup_domain(self, param):
-        self.save_progress(
-            f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -426,8 +423,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_email(self, param):
-        self.save_progress(
-            f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -472,8 +468,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_ip(self, param):
-        self.save_progress(
-            f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -529,8 +524,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_hash(self, param):
-        self.save_progress(
-            f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -580,8 +574,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_lookup_exploit(self, param):
-        self.save_progress(
-            f"In action handler for: {self.get_action_identifier()}")
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         self.debug_print(f"Param: {param}")
 
@@ -618,7 +611,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def __parse_file_content(self, data_uri):
-        header_data_match = re.match(r'data:(.*?);base64,(.+)', data_uri)
+        header_data_match = re.match(r"data:(.*?);base64,(.+)", data_uri)
         if not header_data_match:
             raise ValueError("Invalid data URL format")
         mime_type, data = header_data_match.groups()
@@ -631,33 +624,25 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
     def _get_cursor(self, url):
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
-        cursor = query_params.get('cursor', [None])[0]
+        cursor = query_params.get("cursor", [None])[0]
         return cursor
 
     def _get_key_incident_attachment(self, action_result, attachment_id) -> KeyIncidentAttachment:
         headers = self._get_cti_headers()
         endpoint = f"/cti/key-incident-attachment/{attachment_id}/"
-        ret_val, response = self._make_rest_call(
-            endpoint, action_result, params=None, headers=headers
-        )
+        ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=headers)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        mime_type, content = self.__parse_file_content(
-            response.get("content"))
+        mime_type, content = self.__parse_file_content(response.get("content"))
 
-        return KeyIncidentAttachment(
-            content=content,
-            mime_type=mime_type,
-            name=response["name"],
-            created_at=response["created_at"]
-        )
+        return KeyIncidentAttachment(content=content, mime_type=mime_type, name=response["name"], created_at=response["created_at"])
 
     def get_key_incidents(self, action_result, start_time=None, end_time=None):
         ki_count = 0
         headers = self._get_cti_headers()
-        endpoint = ("/cti/key-incidents/")
+        endpoint = "/cti/key-incidents/"
         params = {
             "ordering": "update",
             "tags": "Key Incident",
@@ -667,8 +652,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         if end_time:
             params["updated_before"] = end_time
 
-        ret_val, response = self._make_rest_call(
-            endpoint, action_result, params=params, headers=headers)
+        ret_val, response = self._make_rest_call(endpoint, action_result, params=params, headers=headers)
 
         for ki in response["results"]:
             ki_count += 1
@@ -688,8 +672,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
             cursor = self._get_cursor(next_page)
             params.update(cursor=cursor)
             self.debug_print(f"cursor: {cursor}")
-            ret_val, response = self._make_rest_call(
-                endpoint, action_result, params=params, headers=headers)
+            ret_val, response = self._make_rest_call(endpoint, action_result, params=params, headers=headers)
             self.debug_print(f"ret_val: {ret_val}")
 
             if phantom.is_fail(ret_val):
@@ -737,10 +720,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         self.debug_print("UPLOAD KEY INCIDENT ATTACHMENT")
 
         success, message, _ = phantom_rules.vault_add(
-            container=container_id,
-            file_location=file_path,
-            file_name=ki_attachment.name,
-            metadata={"mime_type": ki_attachment.mime_type}
+            container=container_id, file_location=file_path, file_name=ki_attachment.name, metadata={"mime_type": ki_attachment.mime_type}
         )
         self.debug_print(f"success: {success}")
         self.debug_print(f"message: {message}")
@@ -788,15 +768,11 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         start_time, end_time = self._get_ingestion_daterange(param)
 
         if start_time is None or end_time is None:
-            return action_result.set_status(
-                phantom.APP_ERROR, message="start time or end time not specified"
-            )
+            return action_result.set_status(phantom.APP_ERROR, message="start time or end time not specified")
 
         if self.is_poll_now():
             self.save_progress("Starting Key Incident manual ingestion ")
-            history_date = datetime.now(timezone.utc) - timedelta(
-                int(self._key_incident_poll_interval)
-            )
+            history_date = datetime.now(timezone.utc) - timedelta(int(self._key_incident_poll_interval))
             poll_start_time = history_date
             poll_end_time = datetime.now(timezone.utc)
 
@@ -815,12 +791,10 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
                     poll_start_time = datetime.strptime(last_polled, "%Y-%m-%dT%H:%M:%S")
                 else:
                     self.debug_print(f"Using fallback start_time: {start_time}")
-                    poll_start_time = datetime.now(timezone.utc) - timedelta(
-                        int(self._key_incident_poll_interval)
-                    )
+                    poll_start_time = datetime.now(timezone.utc) - timedelta(int(self._key_incident_poll_interval))
 
             except (ValueError, TypeError, AttributeError) as e:
-                self.debug_print(f"Error processing last_polled time: {str(e)}")
+                self.debug_print(f"Error processing last_polled time: {e!s}")
                 poll_start_time = start_time
                 self.debug_print(f"Using fallback start_time: {start_time}")
 
@@ -894,8 +868,7 @@ if __name__ == "__main__":
     argparser.add_argument("input_test_json", help="Input Test JSON file")
     argparser.add_argument("-u", "--username", help="username", required=False)
     argparser.add_argument("-p", "--password", help="password", required=False)
-    argparser.add_argument('-v', '--verify', action='store_true',
-                           help='verify', required=False, default=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -928,8 +901,7 @@ if __name__ == "__main__":
             headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=verify,
-                               data=data, headers=headers)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers)
             session_id = r2.cookies["sessionid"]
         except Exception as e:
             print(f"Unable to get session id from the platform. Error: {e}")

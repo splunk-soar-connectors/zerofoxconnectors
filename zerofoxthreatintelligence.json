@@ -18,7 +18,7 @@
         }
     ],
     "license": "Copyright (c) ZeroFox, 2024-2025",
-    "app_version": "1.1.2",
+    "app_version": "1.1.1",
     "utctime_updated": "2023-02-28T17:09:51.740153Z",
     "package_name": "phantom_zerofoxthreatintelligence",
     "main_module": "zerofoxthreatintelligence_connector.py",
@@ -87,19 +87,28 @@
                         "domain"
                     ],
                     "column_name": "Domain",
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values":[
+                        "test.com"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "column_name": "IP",
-                    "column_order": 1
+                    "column_order": 1,
+                    "contains":[
+                        "ip"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
                     "column_name": "URL",
-                    "column_order": 2
+                    "column_order": 2,
+                    "contains":[
+                        "url"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.details",
@@ -172,13 +181,19 @@
                         "ip"
                     ],
                     "column_name": "IP",
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values":[
+                        "8.8.8.8"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
                     "column_name": "URL",
-                    "column_order": 1
+                    "column_order": 1,
+                    "contains":[
+                        "url"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.threat_type",
@@ -257,7 +272,10 @@
                     "data_path": "action_result.data.*.url",
                     "data_type": "string",
                     "column_name": "URL",
-                    "column_order": 1
+                    "column_order": 1,
+                    "contains":[
+                        "url"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
@@ -381,13 +399,17 @@
             "description": "Lookup Email Address",
             "verbose": "Check for the presence of an email address in the ZeroFox Threat Intelligence Feed.",
             "type": "investigate",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "email_address": {
                     "description": "Email Address",
                     "data_type": "string",
                     "required": true,
-                    "order": 0
+                    "primary":true,
+                    "order": 0,
+                    "contains":[
+                        "email"
+                    ]
                 }
             },
             "output": [
@@ -395,13 +417,19 @@
                     "data_path": "action_result.parameter.email_address",
                     "data_type": "string",
                     "column_name": "Email Address",
-                    "column_order": 0
+                    "column_order": 0,
+                    "contains":[
+                        "email"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
                     "column_name": "Domain",
-                    "column_order": 1
+                    "column_order": 1,
+                    "contains":[
+                        "domain"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.breach_name",
