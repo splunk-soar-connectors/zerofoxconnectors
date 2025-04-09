@@ -16,6 +16,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **zerofox_username** | optional | string | ZeroFox CTI Username |
 **zerofox_password** | optional | password | ZeroFox CTI Password |
+**key_incident_poll_interval** | optional | string | Initial historical alert poll interval (in days) |
 **verify_server_cert** | optional | boolean | Verify Sever Certificate |
 
 ### Supported Actions
@@ -25,7 +26,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [lookup ip](#action-lookup-ip) - Check for the presence of an IP in the ZeroFox Threat Intelligence Feed \
 [lookup exploit](#action-lookup-exploit) - Check for the presence of a exploit in the ZeroFox Threat Intelligence Feed \
 [lookup hash](#action-lookup-hash) - Check for the presence of a hash in the ZeroFox Threat Intelligence Feed \
-[lookup email](#action-lookup-email) - Lookup Email Address
+[lookup email](#action-lookup-email) - Lookup Email Address \
+[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality
 
 ## action: 'test connectivity'
 
@@ -59,9 +61,9 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.parameter.domain | string | `domain` | |
-action_result.data.\*.ip | string | | |
-action_result.data.\*.url | string | | |
+action_result.parameter.domain | string | `domain` | test.com |
+action_result.data.\*.ip | string | `ip` | |
+action_result.data.\*.url | string | `url` | |
 action_result.data.\*.details | string | | |
 action_result.data.\*.created_at | string | | |
 action_result.status | string | | success failed |
@@ -87,8 +89,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.parameter.ip | string | `ip` | |
-action_result.data.\*.url | string | | |
+action_result.parameter.ip | string | `ip` | 8.8.8.8 |
+action_result.data.\*.url | string | `url` | |
 action_result.data.\*.threat_type | string | | |
 action_result.data.\*.created_at | string | | |
 action_result.status | string | | success failed |
@@ -115,7 +117,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.cve | string | `cve` | |
-action_result.data.\*.url | string | | |
+action_result.data.\*.url | string | `url` | |
 action_result.data.\*.created_at | string | | |
 action_result.status | string | | success failed |
 action_result.summary | string | | |
@@ -154,7 +156,7 @@ summary.total_objects_successful | numeric | | |
 Lookup Email Address
 
 Type: **investigate** \
-Read only: **False**
+Read only: **True**
 
 Check for the presence of an email address in the ZeroFox Threat Intelligence Feed.
 
@@ -162,14 +164,14 @@ Check for the presence of an email address in the ZeroFox Threat Intelligence Fe
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**email_address** | required | Email Address | string | |
+**email_address** | required | Email Address | string | `email` |
 
 #### Action Output
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.parameter.email_address | string | | |
-action_result.data.\*.domain | string | | |
+action_result.parameter.email_address | string | `email` | |
+action_result.data.\*.domain | string | `domain` | |
 action_result.data.\*.breach_name | string | | |
 action_result.data.\*.created_at | string | | |
 action_result.status | string | | success failed |
@@ -177,6 +179,25 @@ action_result.summary | string | | |
 action_result.message | string | | |
 summary.total_objects | numeric | | |
 summary.total_objects_successful | numeric | | |
+
+## action: 'on poll'
+
+Callback action for the on_poll ingest functionality
+
+Type: **ingest** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**start_time** | optional | Start of time range, in epoch time (milliseconds) | numeric | |
+**end_time** | optional | End of time range, in epoch time (milliseconds) | numeric | |
+**historical_poll** | optional | Historical poll | boolean | |
+
+#### Action Output
+
+No Output
 
 ______________________________________________________________________
 
