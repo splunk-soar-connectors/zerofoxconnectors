@@ -504,11 +504,5 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ],
-    "pip39_dependencies": {
-        "wheel": []
-    },
-    "pip_dependencies": {
-        "wheel": []
-    }
+    ]
 }
