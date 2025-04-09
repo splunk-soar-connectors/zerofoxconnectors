@@ -88,7 +88,7 @@
                     ],
                     "column_name": "Domain",
                     "column_order": 0,
-                    "example_values":[
+                    "example_values": [
                         "test.com"
                     ]
                 },
@@ -97,7 +97,7 @@
                     "data_type": "string",
                     "column_name": "IP",
                     "column_order": 1,
-                    "contains":[
+                    "contains": [
                         "ip"
                     ]
                 },
@@ -106,7 +106,7 @@
                     "data_type": "string",
                     "column_name": "URL",
                     "column_order": 2,
-                    "contains":[
+                    "contains": [
                         "url"
                     ]
                 },
@@ -182,7 +182,7 @@
                     ],
                     "column_name": "IP",
                     "column_order": 0,
-                    "example_values":[
+                    "example_values": [
                         "8.8.8.8"
                     ]
                 },
@@ -191,7 +191,7 @@
                     "data_type": "string",
                     "column_name": "URL",
                     "column_order": 1,
-                    "contains":[
+                    "contains": [
                         "url"
                     ]
                 },
@@ -273,7 +273,7 @@
                     "data_type": "string",
                     "column_name": "URL",
                     "column_order": 1,
-                    "contains":[
+                    "contains": [
                         "url"
                     ]
                 },
@@ -407,7 +407,7 @@
                     "required": true,
                     "primary":true,
                     "order": 0,
-                    "contains":[
+                    "contains": [
                         "email"
                     ]
                 }
@@ -418,7 +418,7 @@
                     "data_type": "string",
                     "column_name": "Email Address",
                     "column_order": 0,
-                    "contains":[
+                    "contains": [
                         "email"
                     ]
                 },
@@ -427,7 +427,7 @@
                     "data_type": "string",
                     "column_name": "Domain",
                     "column_order": 1,
-                    "contains":[
+                    "contains": [
                         "domain"
                     ]
                 },
