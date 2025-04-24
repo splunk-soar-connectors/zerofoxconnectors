@@ -17,6 +17,7 @@ import base64
 import json
 import os
 import re
+import tempfile
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, urlparse
@@ -28,6 +29,7 @@ import requests
 from bs4 import BeautifulSoup
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
+from phantom.vault import Vault
 
 from zerofoxthreatintelligence_consts import ZEROFOX_API_URL
 
@@ -294,7 +296,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         self.debug_print("Testing Access Token...")
         self.debug_print(f"username={self._username}")
-        self.debug_print(f"password={self._password}")
 
         params = {"username": self._username, "password": self._password}
 
@@ -343,7 +344,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         self.debug_print("Fetching Access Token...")
         self.debug_print(f"username={self._username}")
-        self.debug_print(f"password={self._password}")
 
         headers = None
 
@@ -362,9 +362,7 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         if response.status_code == 200:
             json_data = response.json()
             self._access_token = json_data["access"]
-            self.debug_print(f"token: {json_data['access']}")
             return json_data["access"]
-
         else:
             return None
 
@@ -704,16 +702,13 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
     def _create_tmp_attachment_file(self, ki_attachment: KeyIncidentAttachment) -> str:
         self.debug_print("CREATING KEY INCIDENT ATTACHMENT FILE")
-        folder_path = "vault/tmp"
-        os.makedirs(folder_path, exist_ok=True)
-        file_path = os.path.join(folder_path, ki_attachment.name)
-        self.debug_print(f"file_path: {file_path}")
-
         file_content = base64.b64decode(ki_attachment.content)
-        with open(file_path, "wb") as f:
+        with tempfile.NamedTemporaryFile(mode="wb", dir=Vault.get_vault_tmp_dir(), delete=False) as f:
+            tmp_file_path = f.name
+            self.debug_print(f"file_path: {tmp_file_path}")
             f.write(file_content)
 
-        return file_path
+        return tmp_file_path
 
     def _upload_key_incident_attachment(self, container_id: int, ki_attachment: KeyIncidentAttachment):
         file_path = self._create_tmp_attachment_file(ki_attachment)
@@ -761,7 +756,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
     def _on_poll(self, param):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
-        self.save_progress(f"Param: {param}")
         action_result = self.add_action_result(ActionResult(dict(param)))
         self.debug_print("ON POLL CONNECTOR")
 
@@ -846,7 +840,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
 
         self.debug_print("INITIALIZE")
         self.debug_print(f"username={self._username}")
-        self.debug_print(f"password={self._password}")
 
         return phantom.APP_SUCCESS
 
