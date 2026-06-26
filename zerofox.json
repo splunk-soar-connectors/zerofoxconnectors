@@ -16,18 +16,24 @@
         },
         {
             "name": "Leonardo de Requesens"
+        },
+        {
+            "name": "Marcia Duran"
         }
     ],
-    "license": "Copyright (c) ZeroFox, 2024-2025",
-    "app_version": "3.6.2",
-    "utctime_updated": "2025-03-27T21:42:45.991106Z",
+    "license": "Copyright (c) ZeroFox, 2024-2026",
+    "app_version": "3.6.3",
+    "utctime_updated": "2026-06-25T00:00:00.000000Z",
     "package_name": "phantom_zerofox",
     "main_module": "zerofox_connector.py",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.3.0",
     "fips_compliant": false,
     "app_wizard_version": "1.0.0",
     "pip_dependencies": {
-        "wheel": []
+        "packages": [
+            "requests==2.32.3",
+            "beautifulsoup4==4.12.3"
+        ]
     },
     "configuration": {
         "zerofox_api_token": {
@@ -580,5 +586,20 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": [
+            {
+                "module": "requests",
+                "input_file": ""
+            },
+            {
+                "module": "beautifulsoup4",
+                "input_file": ""
+            }
+        ]
+    }
 }

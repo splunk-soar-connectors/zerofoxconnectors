@@ -1,10 +1,10 @@
 # ZeroFox
 
-Publisher: ZeroFox \
-Connector Version: 3.6.1 \
-Product Vendor: ZeroFox \
-Product Name: ZeroFox \
-Minimum Product Version: 6.1.1
+Publisher: ZeroFox <br>
+Connector Version: 3.6.3 <br>
+Product Vendor: ZeroFox <br>
+Product Name: ZeroFox <br>
+Minimum Product Version: 6.3.0
 
 ZeroFox Alerts for Splunk SOAR
 
@@ -37,19 +37,19 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality \
-[take action](#action-take-action) - Take action on a ZeroFox an alert \
-[tag alert](#action-tag-alert) - Add or remove a tag to a ZeroFox alert \
-[threat submission](#action-threat-submission) - Add a manual threat to ZeroFox \
-[lookup alert](#action-lookup-alert) - Retrieve a single alert and it's details, identified by its unique integer identifier \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality <br>
+[take action](#action-take-action) - Take action on a ZeroFox an alert <br>
+[tag alert](#action-tag-alert) - Add or remove a tag to a ZeroFox alert <br>
+[threat submission](#action-threat-submission) - Add a manual threat to ZeroFox <br>
+[lookup alert](#action-lookup-alert) - Retrieve a single alert and it's details, identified by its unique integer identifier <br>
 [modify notes](#action-modify-notes) - Append or replace notes on ZeroFox alert
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -64,7 +64,7 @@ No Output
 
 Callback action for the on_poll ingest functionality
 
-Type: **ingest** \
+Type: **ingest** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -85,7 +85,7 @@ No Output
 
 Take action on a ZeroFox an alert
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -112,7 +112,7 @@ summary.total_objects_successful | numeric | | |
 
 Add or remove a tag to a ZeroFox alert
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -141,7 +141,7 @@ summary.total_objects_successful | numeric | | |
 
 Add a manual threat to ZeroFox
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -172,7 +172,7 @@ summary.total_objects_successful | numeric | | |
 
 Retrieve a single alert and it's details, identified by its unique integer identifier
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -202,7 +202,7 @@ summary.total_objects_successful | numeric | | |
 
 Append or replace notes on ZeroFox alert
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -231,7 +231,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

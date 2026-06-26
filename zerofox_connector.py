@@ -1,6 +1,6 @@
 # File: zerofox_connector.py
 #
-# Copyright (c) ZeroFox, 2024-2025
+# Copyright (c) ZeroFox, 2024-2026
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 import json
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # Phantom App imports
 import phantom.app as phantom
@@ -116,10 +116,11 @@ class AlertMapper:
         except KeyError:
             alert_metadata = None
 
+        screenshot_url = None
         if alert_metadata:
             try:
                 m_data = json.loads(alert_metadata)
-                screenshot_url = m_data["alert_modal"]["screenshot"]
+                screenshot_url = m_data.get("alert_modal", {}).get("screenshot")
             except KeyError:
                 screenshot_url = None
 
@@ -194,7 +195,7 @@ class AlertMapper:
         container["source_data_identifier"] = alert["id"]
         container["asset_name"] = alert["entity"]["name"]
         container["tags"] = alert["tags"]
-        date_time_obj = datetime.strptime(alert["timestamp"], "%Y-%m-%dT%H:%M:%S+00:00")
+        date_time_obj = datetime.fromisoformat(alert["timestamp"].replace("Z", "+00:00"))
         container["start_time"] = date_time_obj.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         container["ingest_app_id"] = self.app_id
 
@@ -448,7 +449,7 @@ class ZerofoxAlertsConnector(BaseConnector):
 
             try:
                 last_checked_alert_time = self._state["last_polled"]
-                last_checked_alert_time = last_checked_alert_time.strftime("%Y-%m-%d %H:%M:%S")
+                last_checked_alert_time = datetime.fromisoformat(last_checked_alert_time)
             except:
                 last_checked_alert_time = interval_startdate
 
@@ -508,7 +509,7 @@ class ZerofoxAlertsConnector(BaseConnector):
 
             self.debug_print("parsing through list of alerts...")
 
-            for alert in response["alerts"]:
+            for alert in response.get("alerts") or []:
                 alert_id = alert["id"]
 
                 self.debug_print(f"alert_id: {alert_id}")
@@ -561,7 +562,7 @@ class ZerofoxAlertsConnector(BaseConnector):
 
             # set state
             if not self.is_poll_now() and alert_total > 0:
-                state_time = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+                state_time = datetime.now(timezone.utc).isoformat()
                 self.debug_print(f"updating _state to {state_time}")
 
                 self._state["last_polled"] = state_time
@@ -603,7 +604,7 @@ class ZerofoxAlertsConnector(BaseConnector):
                     "Please provide a valid integer value in the 'alert_id' parameter",
                 )
             alert_id = int(alert_id)
-        except:
+        except Exception:
             return action_result.set_status(
                 phantom.APP_ERROR,
                 "Please provide a valid integer value in the 'alert_id' parameter",
