@@ -271,7 +271,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         url = self._base_url + endpoint
 
         self.debug_print(f"URL={url}")
-        self.debug_print(f"kwargs={kwargs}")
 
         try:
             r = request_func(url, verify=config.get("verify_server_cert", False), **kwargs)
