@@ -17,7 +17,7 @@
             "name": "Felipe Garrido"
         }
     ],
-    "license": "Copyright (c) ZeroFox, 2024-2025",
+    "license": "Copyright (c) ZeroFox, 2024-2026",
     "app_version": "1.2.0",
     "utctime_updated": "2025-04-28T16:12:47.917498Z",
     "package_name": "phantom_zerofoxthreatintelligence",
@@ -503,5 +503,11 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
+    }
 }
