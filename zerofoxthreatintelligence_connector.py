@@ -1,6 +1,6 @@
 # File: zerofoxthreatintelligence_connector.py
 #
-# Copyright (c) ZeroFox, 2024-2025
+# Copyright (c) ZeroFox, 2024-2026
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -271,7 +271,6 @@ class ZerofoxThreatIntelligenceConnector(BaseConnector):
         url = self._base_url + endpoint
 
         self.debug_print(f"URL={url}")
-        self.debug_print(f"kwargs={kwargs}")
 
         try:
             r = request_func(url, verify=config.get("verify_server_cert", False), **kwargs)
