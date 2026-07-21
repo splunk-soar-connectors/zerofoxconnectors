@@ -18,8 +18,8 @@
         }
     ],
     "license": "Copyright (c) ZeroFox, 2024-2026",
-    "app_version": "1.2.1",
-    "utctime_updated": "2026-07-21T05:32:09.719011Z",
+    "app_version": "1.2.2",
+    "utctime_updated": "2026-07-21T05:44:56.576755Z",
     "package_name": "phantom_zerofoxthreatintelligence",
     "main_module": "zerofoxthreatintelligence_connector.py",
     "min_phantom_version": "6.1.1",
