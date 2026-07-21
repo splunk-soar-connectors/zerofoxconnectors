@@ -1,2 +1,1 @@
 **Unreleased**
-* Removed request argument logging that exposed asset credentials during token validation.

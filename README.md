@@ -1,7 +1,7 @@
 # ZeroFox Threat Intelligence
 
 Publisher: ZeroFox <br>
-Connector Version: 1.2.0 <br>
+Connector Version: 1.2.1 <br>
 Product Vendor: ZeroFox <br>
 Product Name: ZeroFox Threat Intelligence <br>
 Minimum Product Version: 6.1.1
