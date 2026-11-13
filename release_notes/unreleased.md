@@ -1,1 +1,3 @@
 **Unreleased**
+
+* - Revert pinned platform dependencies from the requirements file.
